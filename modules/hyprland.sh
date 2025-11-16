@@ -3,6 +3,8 @@ set -euo pipefail
 
 PROFILE="$HOME_DIR/.bash_profile"
 
+sudo pacman -S --noconfirm --needed hyprland uwsm xdg-desktop-portal-hyprland hyprpolkitagent
+
 # Add the block only if it's not already in the file
 if ! grep -q "uwsm check may-start" "$PROFILE"; then
 cat << 'EOF' >> "$PROFILE"

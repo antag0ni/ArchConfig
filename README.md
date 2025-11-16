@@ -17,5 +17,3 @@ Modular Arch Linux post-install scripts for a Hyprland-centered desktop.
 2. `chmod +x install.sh modules/*.sh`
 3. `sudo ./install.sh`
 
-
-Customize `config.sh` and the `modules/` to match your workflow.

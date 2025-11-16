@@ -30,6 +30,7 @@ BASE_PACKAGES=(
     nvidia-utils
     intel-ucode
     xf86-video-intel
+    gnome
 )
 
 WAYLAND_ESSENTIALS=(
