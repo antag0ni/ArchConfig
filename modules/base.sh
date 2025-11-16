@@ -17,8 +17,7 @@ BASE_PACKAGES=(
     unzip
     tar
     zip
-    htop
-    neofetch
+    btop
     rsync
     reflector
     fastfetch
@@ -29,8 +28,6 @@ BASE_PACKAGES=(
     man-pages
     nvidia
     nvidia-utils
-    #nvidia-dkms
-    lib32-nvidia-utils
     intel-ucode
     xf86-video-intel
 )
