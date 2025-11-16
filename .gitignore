@@ -1,0 +1,7 @@
+*.swp
+*.swo
+.vscode/
+.idea/
+node_modules/
+.DS_Store
+/home/*/.cache/
