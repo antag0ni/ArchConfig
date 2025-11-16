@@ -28,6 +28,8 @@ BASE_PACKAGES=(
     man-pages
     nvidia
     nvidia-utils
+    nvidia-dkms
+    lib32-nvidia-utils
     intel-ucode
     xf86-video-intel
 )
@@ -35,6 +37,7 @@ BASE_PACKAGES=(
 WAYLAND_ESSENTIALS=(
     wl-clipboard
     seatd
+    egl-wayland
     polkit
     pipewire
     pipewire-pulse
@@ -45,8 +48,8 @@ WAYLAND_ESSENTIALS=(
 # ---------------------------
 # Mirror optimization
 # ---------------------------
-echo "[*] Optimizing mirrors…"
-reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist
+#echo "[*] Optimizing mirrors…"
+#reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 # ---------------------------
 # System update
@@ -72,20 +75,20 @@ systemctl enable --now seatd.service
 # ---------------------------
 # Create user directories
 # ---------------------------
-echo "[*] Creating XDG user directories…"
-sudo -u "$USERNAME" xdg-user-dirs-update
+#echo "[*] Creating XDG user directories…"
+#sudo -u "$USERNAME" xdg-user-dirs-update
 
 # ---------------------------
 # AUR Helper (yay)
 # ---------------------------
-if ! command -v yay &>/dev/null; then
-    echo "[*] Installing AUR helper: yay…"
-    sudo -u "$USERNAME" bash <<EOF
-cd "$HOME_DIR"
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si --noconfirm
-EOF
-fi
+# if ! command -v yay &>/dev/null; then
+#     echo "[*] Installing AUR helper: yay…"
+#     sudo -u "$USERNAME" bash <<'EOF'
+# cd "$HOME_DIR"
+# git clone https://aur.archlinux.org/yay.git
+# cd yay
+# makepkg -si --noconfirm
+# EOF
+# fi
 
 echo "[✓] Base module complete."
