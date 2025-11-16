@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Auto-detect username safely
+if [[ -n "${SUDO_USER:-}" ]]; then
+    USERNAME="$SUDO_USER"
+else
+    USERNAME="$(whoami)"
+fi
+
+HOME_DIR="/home/$USERNAME"
+
 # Available modules
 MODULES=(
     base
