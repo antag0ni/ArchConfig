@@ -7,6 +7,9 @@ echo "[*] Running BASE module…"
 # ---------------------------
 BASE_PACKAGES=(
     base-devel
+    sudo
+    vim
+    nano
     git
     curl
     wget
@@ -21,6 +24,12 @@ BASE_PACKAGES=(
     networkmanager
     xdg-user-dirs
     xdg-utils
+    man-db
+    man-pages
+    nvidia
+    nvidia-utils
+    intel-ucode
+    xf86-video-intel
 )
 
 WAYLAND_ESSENTIALS=(
@@ -30,6 +39,7 @@ WAYLAND_ESSENTIALS=(
     pipewire
     pipewire-pulse
     wireplumber
+    mesa
 )
 
 # ---------------------------
