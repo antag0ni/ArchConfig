@@ -7,6 +7,7 @@ echo "[*] Running BASE module…"
 # ---------------------------
 BASE_PACKAGES=(
     base-devel
+    kitty
     sudo
     vim
     nano
@@ -28,7 +29,7 @@ BASE_PACKAGES=(
     man-pages
     nvidia
     nvidia-utils
-    nvidia-dkms
+    #nvidia-dkms
     lib32-nvidia-utils
     intel-ucode
     xf86-video-intel
