@@ -62,8 +62,8 @@ pacman -Syu --noconfirm
 # Pacman essential packages
 # ---------------------------
 echo "[*] Installing essential system packages…"
-install_pkgs "${BASE_PACKAGES[@]}"
-install_pkgs "${WAYLAND_ESSENTIALS[@]}"
+sudo pacman -S --noconfirm --needed "${BASE_PACKAGES[@]}"
+sudo pacman -S --noconfirm --needed "${WAYLAND_ESSENTIALS[@]}"
 
 # ---------------------------
 # Enable essential services
@@ -71,7 +71,7 @@ install_pkgs "${WAYLAND_ESSENTIALS[@]}"
 echo "[*] Enabling system services…"
 
 systemctl enable --now NetworkManager
-systemctl enable --now seatd.service
+#systemctl enable --now seatd.service
 
 # ---------------------------
 # Create user directories

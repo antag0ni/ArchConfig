@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source config.sh
-
-# Load utils
-source modules/utils.sh
-
 # Available modules
 MODULES=(
     base
@@ -16,7 +11,15 @@ echo "[*] Arch Post-Install Script"
 echo "[*] Modules enabled: ${MODULES[*]}"
 
 for module in "${MODULES[@]}"; do
-    run_module "$module"
+    local module_name="$module"
+    local module_path="modules/${module_name}.sh"
+
+    if [[ -f "$module_path" ]]; then
+        echo "[*] Running module: $module_name"
+        source "$module_path"
+    else
+        echo "[!] Module '$module_name' not found"
+    fi 
 done
 
 echo -e "\n[✓] Installation complete."

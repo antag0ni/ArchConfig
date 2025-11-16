@@ -17,4 +17,4 @@ EOF
     echo "Added UWSM autostart block to $PROFILE"
 else
     echo "UWSM autostart block already exists in $PROFILE"
-fi
+fi  
