@@ -39,3 +39,20 @@ if ! run_as_user grep -qF "UWSM_AUTOSTART" "$PROFILE" 2>/dev/null; then
 else
     info "UWSM autostart block already exists in $PROFILE"
 fi
+
+# Deploy Hyprland dotfiles if present
+repo_root="$(cd "$script_dir/.." && pwd)"
+dotfiles_root="${DOTFILES_DIR:-$repo_root/dotfiles}"
+hyprland_dotfiles="${HYPRLAND_DOTFILES_SOURCE:-$dotfiles_root/hyprland}"
+hyprland_target="${HYPRLAND_DOTFILES_DEST:-${HOME_DIR:-$HOME}/.config/hypr}"
+
+if [[ -d "$hyprland_dotfiles" ]]; then
+    info "Deploying Hyprland dotfiles -> $hyprland_target"
+    if deploy_directory "$hyprland_dotfiles" "$hyprland_target"; then
+        info "Hyprland dotfiles deployed"
+    else
+        warn "Failed to deploy Hyprland dotfiles"
+    fi
+else
+    warn "Hyprland dotfiles not found at $hyprland_dotfiles; skipping"
+fi

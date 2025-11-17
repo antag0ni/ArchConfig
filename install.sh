@@ -18,6 +18,7 @@ Options:
   --list        List available modules
   --dry-run     Print actions without executing modules
   --modules A,B Override enabled modules (comma-separated)
+  --profile P   Load profile (name or path) from profiles/
 
 If modules are provided as positional arguments, those modules are run in order.
 Otherwise the default set in the script is used.
@@ -45,12 +46,11 @@ if [[ -z "$HOME_DIR" ]]; then
     HOME_DIR="/home/$USERNAME"
 fi
 
-MODULES=(
-    base
-    hyprland
-)
+MODULES=(base hyprland)
 
 DRY_RUN=false
+PROFILE_SPEC=""
+PROFILE_DIR="profiles"
 
 # parse args (simple)
 POSITIONAL=()
@@ -80,6 +80,15 @@ while [[ $# -gt 0 ]]; do
             IFS=',' read -r -a MODULES <<< "${1#*=}"
             shift
             ;;
+        --profile)
+            shift
+            PROFILE_SPEC="${1:-}"
+            shift
+            ;;
+        --profile=*)
+            PROFILE_SPEC="${1#*=}"
+            shift
+            ;;
         --)
             shift
             break
@@ -99,10 +108,51 @@ if [[ ${#POSITIONAL[@]} -gt 0 ]]; then
     MODULES=("${POSITIONAL[@]}")
 fi
 
+resolve_profile_path() {
+    local spec="$1"
+    local default_path="$PROFILE_DIR/default.conf"
+
+    if [[ -z "$spec" ]]; then
+        [[ -f "$default_path" ]] && printf '%s\n' "$default_path" && return 0
+        return 1
+    fi
+
+    if [[ -f "$spec" ]]; then
+        printf '%s\n' "$spec"
+        return 0
+    fi
+
+    local candidate="$PROFILE_DIR/${spec}.conf"
+    if [[ -f "$candidate" ]]; then
+        printf '%s\n' "$candidate"
+        return 0
+    fi
+
+    return 1
+}
+
+if profile_path="$(resolve_profile_path "$PROFILE_SPEC")"; then
+    info "Loading profile from $profile_path"
+    set -a
+    # shellcheck disable=SC1090
+    if ! source "$profile_path"; then
+        set +a
+        err "Failed to load profile $profile_path"
+        exit 2
+    fi
+    set +a
+else
+    if [[ -n "$PROFILE_SPEC" ]]; then
+        warn "Profile '$PROFILE_SPEC' not found; continuing with inline defaults"
+    fi
+fi
+
 info "Arch Post-Install Script"
 info "User: $USERNAME"
 info "Home: $HOME_DIR"
 info "Modules enabled: ${MODULES[*]}"
+
+export DRY_RUN
 
 if [[ ! -d "modules" ]]; then
     err "modules/ directory not found"
@@ -126,7 +176,7 @@ run_module() {
     fi
 
     # Run each module in a subshell to avoid leaking variables and allow set -e in modules
-    ( export USERNAME HOME_DIR; source "$module_path" )
+    ( export USERNAME HOME_DIR DRY_RUN; source "$module_path" )
 }
 
 for module in "${MODULES[@]}"; do
